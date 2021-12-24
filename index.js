@@ -1,12 +1,18 @@
 "use strict";
 const delay = (ms) => new Promise(resolve => setTimeout(() => resolve(null), ms));
 const url = 'https://jsonplaceholder.typicode.com/todos';
-function fetchTodos() {
-    console.log('Fetch todo started');
-    return delay(2000).then(() => {
-        return fetch(url).then(data => data.json());
-    });
+async function fetchAsyncTodos() {
+    try {
+        await delay(2000);
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data);
+    }
+    catch (e) {
+        console.error(e.message);
+    }
+    finally {
+        console.log('Done');
+    }
 }
-fetchTodos()
-    .then((data) => console.log(data))
-    .catch((e) => console.error(e));
+fetchAsyncTodos();

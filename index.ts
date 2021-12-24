@@ -1,15 +1,27 @@
 const delay = (ms: number) => new Promise(resolve => setTimeout(() => resolve(null), ms))
 
-const url: string = 'https://jsonplaceholder.typicode.com/todos'
-
-function fetchTodos(): any {
-  console.log('Fetch todo started')
-
-  return delay(2000).then(() => {
-    return fetch(url).then(data => data.json())
-  })
+interface Todo {
+  completed: boolean
+  id: number
+  title: string
+  userId: number
 }
 
-fetchTodos()
-  .then((data: any) => console.log(data))
-  .catch((e: Error) => console.error(e))
+const url: string = 'https://jsonplaceholder.typicode.com/todos'
+
+async function fetchAsyncTodos() {
+  try {
+    await delay(2000)
+
+    const response = await fetch(url)
+    const data: Todo[] = await response.json()
+
+    console.log(data)
+  } catch (e) {
+    console.error((e as Error).message)
+  } finally {
+    console.log('Done')
+  }
+}
+
+fetchAsyncTodos()
