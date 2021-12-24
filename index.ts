@@ -7,33 +7,19 @@ interface Data {
   modified: boolean
 }
 
-const p = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    console.log('Prepearing data.........')
+const sleep = (ms: number) =>
+  new Promise(resolve =>
+    setTimeout(() => resolve(null), ms));
 
-    const backendData: Data = {
-      server: 'aws',
-      port: 2000,
-      status: 'working',
-      modified: false
-    }
+// sleep(2000).then(() => console.log('Console log after 2 seconds'))
+// sleep(4000).then(() => console.log('Console log after 4 seconds'))
 
-    resolve(backendData)
-  }, 2000)
-})
-  .then((data: any) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(data)
-      }, 2000)
-    })
+Promise.all([sleep(2000), sleep(4000)])
+  .then(() => {
+    console.log('All promises')
   })
-  .then((data: any) => {
-    data.modified = true
-    return data
+
+Promise.race([sleep(2000), sleep(4000)])
+  .then(() => {
+    console.log('Race promises')
   })
-  .then((data: any) => {
-    console.log('Modified', data)
-  })
-  .catch(err => console.error('Error: ', err))
-  .finally(() => console.log('Finally'))

@@ -1,30 +1,13 @@
 "use strict";
 console.log('Request data........');
-const p = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        console.log('Prepearing data.........');
-        const backendData = {
-            server: 'aws',
-            port: 2000,
-            status: 'working',
-            modified: false
-        };
-        resolve(backendData);
-    }, 2000);
-})
-    .then((data) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(data);
-        }, 2000);
-    });
-})
-    .then((data) => {
-    data.modified = true;
-    return data;
-})
-    .then((data) => {
-    console.log('Modified', data);
-})
-    .catch(err => console.error('Error: ', err))
-    .finally(() => console.log('Finally'));
+const sleep = (ms) => new Promise(resolve => setTimeout(() => resolve(null), ms));
+// sleep(2000).then(() => console.log('Console log after 2 seconds'))
+// sleep(4000).then(() => console.log('Console log after 4 seconds'))
+Promise.all([sleep(2000), sleep(4000)])
+    .then(() => {
+    console.log('All promises');
+});
+Promise.race([sleep(2000), sleep(4000)])
+    .then(() => {
+    console.log('Race promises');
+});
