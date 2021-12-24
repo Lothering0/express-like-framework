@@ -7,7 +7,7 @@ interface Data {
   modified: boolean
 }
 
-setTimeout(() => {
+/* setTimeout(() => {
   console.log('Prepearing data.........')
 
   const backendData: Data = {
@@ -22,4 +22,4 @@ setTimeout(() => {
 
     console.log('Data received', backendData)
   }, 2000)
-}, 2000)
+}, 2000) */
