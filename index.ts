@@ -1,66 +1,15 @@
-namespace Animal {
-  export interface Options {
-    name: string
-    age: number
-    hasTail: boolean
-  }
+const delay = (ms: number) => new Promise(resolve => setTimeout(() => resolve(null), ms))
 
-  export interface IAnimal extends Options {
-    voice: () => void
-  }
+const url: string = 'https://jsonplaceholder.typicode.com/todos'
 
-  export interface ICat extends Options {
-    color: string
-    ageInfo?: number
-  }
+function fetchTodos(): any {
+  console.log('Fetch todo started')
+
+  return delay(2000).then(() => {
+    return fetch(url).then(data => data.json())
+  })
 }
 
-namespace Animal {
-  abstract class Animal implements IAnimal {
-    static type = 'animal'.toUpperCase()
-
-    name: string
-    age: number
-    hasTail: boolean
-
-    constructor({ name, age, hasTail }: Options) {
-      this.name = name
-      this.age = age
-      this.hasTail = hasTail
-    }
-
-    voice(): void {
-      console.log(this.name)
-    }
-  }
-
-  export class Cat extends Animal implements ICat {
-    static type = 'cat'.toUpperCase()
-
-    color: string
-
-    constructor({ color, ...config }: ICat) {
-      super(config)
-      this.color = color
-    }
-
-    get ageInfo() {
-      return this.age * 7
-    }
-
-    set ageInfo(value: number) {
-      this.age = value
-    }
-  }
-}
-
-const cat: Animal.ICat = new Animal.Cat({
-  name: 'Cat',
-  age: 4,
-  hasTail: true,
-  color: 'black'
-})
-
-cat.ageInfo = 5
-
-console.log(cat.ageInfo)
+fetchTodos()
+  .then((data: any) => console.log(data))
+  .catch((e: Error) => console.error(e))
