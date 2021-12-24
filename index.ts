@@ -47,14 +47,20 @@ namespace Animal {
     get ageInfo() {
       return this.age * 7
     }
+
+    set ageInfo(value: number) {
+      this.age = value
+    }
   }
 }
 
 const cat: Animal.ICat = new Animal.Cat({
   name: 'Cat',
-  age: 5,
+  age: 4,
   hasTail: true,
   color: 'black'
 })
+
+cat.ageInfo = 5
 
 console.log(cat.ageInfo)

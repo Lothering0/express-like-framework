@@ -20,14 +20,18 @@ var Animal;
         get ageInfo() {
             return this.age * 7;
         }
+        set ageInfo(value) {
+            this.age = value;
+        }
     }
     Cat.type = 'cat'.toUpperCase();
     Animal_1.Cat = Cat;
 })(Animal || (Animal = {}));
 const cat = new Animal.Cat({
     name: 'Cat',
-    age: 5,
+    age: 4,
     hasTail: true,
     color: 'black'
 });
+cat.ageInfo = 5;
 console.log(cat.ageInfo);
