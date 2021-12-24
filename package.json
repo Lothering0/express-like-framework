@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsctest": "tsc",
-    "tsc": "tsc --watch --target es6",
+    "tsc": "tsc --watch --target es2018",
     "dev": "concurrently \"tsc --watch index.ts\" \"nodemon index.js\""
   },
   "keywords": [],

@@ -7,19 +7,33 @@ interface Data {
   modified: boolean
 }
 
-/* setTimeout(() => {
-  console.log('Prepearing data.........')
-
-  const backendData: Data = {
-    server: 'aws',
-    port: 2000,
-    status: 'working',
-    modified: false
-  }
-
+const p = new Promise((resolve, reject) => {
   setTimeout(() => {
-    backendData.modified = true
+    console.log('Prepearing data.........')
 
-    console.log('Data received', backendData)
+    const backendData: Data = {
+      server: 'aws',
+      port: 2000,
+      status: 'working',
+      modified: false
+    }
+
+    resolve(backendData)
   }, 2000)
-}, 2000) */
+})
+  .then((data: any) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(data)
+      }, 2000)
+    })
+  })
+  .then((data: any) => {
+    data.modified = true
+    return data
+  })
+  .then((data: any) => {
+    console.log('Modified', data)
+  })
+  .catch(err => console.error('Error: ', err))
+  .finally(() => console.log('Finally'))
