@@ -1,58 +1,31 @@
-const obj = {
-  [Symbol.iterator]() {
-    let i = 0
+const requestURL = 'https://jsonplaceholder.typicode.com/users'
 
-    return {
-      next() {
-        if (i < 10) {
-          return {
-            value: i++,
-            done: false
-          }
-        }
+function sendRequest(method = 'GET', url = requestURL, body = null) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
 
-        return {
-          value: undefined,
-          done: true
-        }
-      }
+    xhr.open(method, url)
+
+    xhr.responseType = 'json'
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    xhr.onload = () => {
+      xhr.status >= 400
+        ? reject(xhr.response)
+        : resolve(xhr.response)
     }
-  }
-}
 
-for (let i of obj) {
-  console.log(i)
-}
-
-/* const iterator = {
-  [Symbol.iterator](n = 10) {
-    let i = 0
-
-    return {
-      next() {
-        if (i < n) {
-          return {
-            value: ++i,
-            done: false
-          }
-        }
-
-        return {
-          value: undefined,
-          done: true
-        }
-      }
+    xhr.onerror = () => {
+      reject(xhr.response)
     }
-  }
-} */
 
-/* function* iter(n = 8) {
-  for (let i = 0; i < n; i++) {
-    yield i
-  }
+    xhr.send(JSON.stringify(body))
+  })
 }
 
-for (let k of iter()) {
-  console.log(k)
-}
- */
+sendRequest('POST', requestURL, {
+  name: 'Something',
+  age: 53
+})
+  .then(data => console.log(data))
+  .catch(err => console.error(err))
