@@ -1,32 +1,58 @@
-const userData = [
-  { id: 1, name: 'John', age: 25, job: 'Fullstack' },
-  { id: 2, name: 'Alex', age: 22, job: 'Student' },
-  { id: 3, name: 'George', age: 23, job: 'Backend' },
-  { id: 4, name: 'John', age: 24, job: 'Assenizator' },
-]
+const obj = {
+  [Symbol.iterator]() {
+    let i = 0
 
-const IndexedArray = new Proxy(Array, {
-  construct(target, [args]) {
-    const index = {}
-    args.forEach(i => index[i.id] = i)
-
-    return new Proxy(new target(...args), {
-      get(arr, prop) {
-        switch (prop) {
-          case 'push': return item => {
-            index[item.id] = item
-            arr[prop].call(arr, item)
+    return {
+      next() {
+        if (i < 10) {
+          return {
+            value: i++,
+            done: false
           }
-          case 'findById': return id => index[id]
-          default: return arr[prop]
+        }
+
+        return {
+          value: undefined,
+          done: true
         }
       }
-    })
+    }
   }
-})
+}
 
-const users = new IndexedArray(userData)
+for (let i of obj) {
+  console.log(i)
+}
 
-users.push({ id: 5, name: 'Frank' })
+/* const iterator = {
+  [Symbol.iterator](n = 10) {
+    let i = 0
 
-console.log(users.findById(5))
+    return {
+      next() {
+        if (i < n) {
+          return {
+            value: ++i,
+            done: false
+          }
+        }
+
+        return {
+          value: undefined,
+          done: true
+        }
+      }
+    }
+  }
+} */
+
+/* function* iter(n = 8) {
+  for (let i = 0; i < n; i++) {
+    yield i
+  }
+}
+
+for (let k of iter()) {
+  console.log(k)
+}
+ */
