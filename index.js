@@ -1,13 +1,25 @@
-const log = text => `Log: ${text}`
+class Person {
+  constructor(name, age) {
+    this.name = name
+    this.age = age
+  }
+}
 
-const fp = new Proxy(log, {
-  apply(target, thisArg, args) {
+const CP = new Proxy(Person, {
+  construct(target, args) {
     console.log(target)
-    console.log(thisArg)
     console.log(args)
 
-    return target.apply(thisArg, args).toUpperCase()
+    return new Proxy(new target(...args), {
+      get(t, prop) {
+        console.log(`Getting: ${prop}`)
+
+        return t[prop]
+      }
+    })
   }
 })
 
-console.log(fp('Hello world'))
+const something = new CP('Alex', 22)
+
+console.log(something.name)
