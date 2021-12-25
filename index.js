@@ -1,25 +1,32 @@
-class Person {
-  constructor(name, age) {
-    this.name = name
-    this.age = age
-  }
-}
+const userData = [
+  { id: 1, name: 'John', age: 25, job: 'Fullstack' },
+  { id: 2, name: 'Alex', age: 22, job: 'Student' },
+  { id: 3, name: 'George', age: 23, job: 'Backend' },
+  { id: 4, name: 'John', age: 24, job: 'Assenizator' },
+]
 
-const CP = new Proxy(Person, {
-  construct(target, args) {
-    console.log(target)
-    console.log(args)
+const IndexedArray = new Proxy(Array, {
+  construct(target, [args]) {
+    const index = {}
+    args.forEach(i => index[i.id] = i)
 
     return new Proxy(new target(...args), {
-      get(t, prop) {
-        console.log(`Getting: ${prop}`)
-
-        return t[prop]
+      get(arr, prop) {
+        switch (prop) {
+          case 'push': return item => {
+            index[item.id] = item
+            arr[prop].call(arr, item)
+          }
+          case 'findById': return id => index[id]
+          default: return arr[prop]
+        }
       }
     })
   }
 })
 
-const something = new CP('Alex', 22)
+const users = new IndexedArray(userData)
 
-console.log(something.name)
+users.push({ id: 5, name: 'Frank' })
+
+console.log(users.findById(5))
