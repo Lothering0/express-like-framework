@@ -8,7 +8,7 @@ function groupBy(arr, cb) {
       finalObj[cb(el)] = []
     }
 
-    return finalObj[cb(el)].push(el)
+    finalObj[cb(el)].push(el)
   })
 
   return finalObj
