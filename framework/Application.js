@@ -4,7 +4,7 @@ const EventEmitter = require('events')
 module.exports = class Application {
   constructor() {
     this.emitter = new EventEmitter()
-    this.server = this._createServer
+    this.server = this._createServer()
   }
 
   listen(port, callback) {
