@@ -1,80 +1,17 @@
-const tree = [
-  {
-    v: 5,
-    c: [
-      {
-        v: 10,
-        c: [
-          {
-            v: 11
-          }
-        ]
-      },
-      {
-        v: 7,
-        c: [
-          {
-            v: 5,
-            c: [
-              {
-                v: 1
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    v: 5,
-    c: [
-      {
-        v: 10
-      },
-      {
-        v: 15
-      }
-    ]
-  }
-]// 69
+const arr = [4.2, 6.7, 4.5]
 
-const recursive = tree => {
-  let total = 0
+function groupBy(arr, cb) {
+  const finalObj = {}
 
-  tree.forEach(el => {
-    total += el.v
-
-    if (!el.c) return total
-
-    total += recursive(el.c)
-  })
-
-  return total
-}
-
-// console.log(recursive(tree))
-
-const iteration = tree => {
-  if (!tree.length) return 0
-
-  const stack = []
-  let total = 0
-
-  tree.forEach(node => {
-    stack.push(node)
-  })
-
-  while (stack.length) {
-    const node = stack.pop()
-    total += node.v
-    if (node.c) {
-      node.c.forEach(el => {
-        stack.push(el)
-      })
+  arr.forEach(el => {
+    if (!Array.isArray(finalObj[cb(el)])) {
+      finalObj[cb(el)] = []
     }
-  }
 
-  return total
+    return finalObj[cb(el)].push(el)
+  })
+
+  return finalObj
 }
 
-console.log(iteration(tree))
+console.log(groupBy(arr, Math.floor))
