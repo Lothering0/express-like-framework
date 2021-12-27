@@ -1,32 +1,23 @@
-const fs = require('fs')
-const path = require('path')
+const os = require('os')
+const cluster = require('cluster')
 
-const writeFileAsync = async (path, data) => {
-  return new Promise((resolve, reject) => {
-    return fs.writeFile(path, data, (err) => {
-      if (err) {
-        return reject(err.message)
-      }
+if (cluster.isMaster) {
+  for (let i = 0; i < os.cpus().length - 2; i++) {
+    cluster.fork()
+  }
 
-      resolve()
-    })
+  cluster.on('exit', (worker) => {
+    console.log(`Worker with pid=${worker.process.pid} was died :(`)
+    cluster.fork()
   })
+} else {
+  console.log(`Worker with pid=${process.pid} was started`)
+
+  setInterval(() => {
+    console.log(`Worker with pid=${process.pid} working now`)
+  }, 5000)
 }
 
-const appendFileAsync = async (path, data) => {
-  return new Promise((resolve, reject) => {
-    return fs.appendFile(path, data, (err) => {
-      if (err) {
-        return reject(err.message)
-      }
 
-      resolve()
-    })
-  })
-}
 
-writeFileAsync(path.resolve(__dirname, 'test.txt'), 'data')
-  .then(() => appendFileAsync(path.resolve(__dirname, 'test.txt'), '123'))
-  .then(() => appendFileAsync(path.resolve(__dirname, 'test.txt'), '456'))
-  .then(() => appendFileAsync(path.resolve(__dirname, 'test.txt'), '789'))
-  .catch(err => console.log(err))
+console.log(process.pid)
