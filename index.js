@@ -1,23 +1,20 @@
-const os = require('os')
-const cluster = require('cluster')
+const http = require('http')
+const EventEmitter = require('events')
+const Router = require('./framework/Router')
+const Application = require('./framework/Application')
+const PORT = process.env.PORT || 5000
 
-if (cluster.isMaster) {
-  for (let i = 0; i < os.cpus().length - 2; i++) {
-    cluster.fork()
-  }
+const app = new Application()
+const router = new Router()
 
-  cluster.on('exit', (worker) => {
-    console.log(`Worker with pid=${worker.process.pid} was died :(`)
-    cluster.fork()
-  })
-} else {
-  console.log(`Worker with pid=${process.pid} was started`)
+router.get('/users', (req, res) => {
+  res.end('YOU SEND REQUEST TO /USERS')
+})
 
-  setInterval(() => {
-    console.log(`Worker with pid=${process.pid} working now`)
-  }, 5000)
-}
+router.get('/posts', (req, res) => {
+  res.end('YOU SEND REQUEST TO /POSTS')
+})
 
+app.addRouter(router)
 
-
-console.log(process.pid)
+app.listen(PORT, () => console.log(`Server started on PORT ${PORT}`))
