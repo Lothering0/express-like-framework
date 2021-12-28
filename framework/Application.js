@@ -46,7 +46,6 @@ module.exports = class Application {
 
         this.middleware.forEach(mw => mw(req, res))
 
-        console.log(req.pathname)
         const emitted = this.emitter.emit(this._getRouteMask(req.pathname, req.method), req, res)
 
         if (!emitted) res.end()
