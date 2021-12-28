@@ -1,11 +1,13 @@
 const userRouter = require('./src/user-router')
 const Application = require('./framework/Application')
-const jsonParser = require('./middleware/parseJson')
+const parseJson = require('./middleware/parseJson')
+const parseUrl = require('./middleware/parseUrl')
 
 const PORT = process.env.PORT || 5000
 
 const app = new Application()
-app.use(jsonParser)
+app.use(parseJson)
+app.use(parseUrl(`http://localhost:${PORT}`))
 
 app.addRouter(userRouter)
 

@@ -8,11 +8,15 @@ const users = [
 ]
 
 router.get('/users', (req, res) => {
-  res.writeHead(200, {
-    'Content-Type': 'application/json'
-  })
+  console.log(req.params)
+  res.send(users)
+})
 
-  res.end(JSON.stringify(users))
+router.post('/users', (req, res) => {
+  console.log(req.body)
+  const user = req.body
+  users.push(user)
+  res.send(users)
 })
 
 module.exports = router
