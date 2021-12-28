@@ -1,4 +1,4 @@
-const userRouter = require('./src/user-router')
+const userRouter = require('./routes/user-router')
 const Application = require('./framework/Application')
 const parseJson = require('./middleware/parseJson')
 const parseUrl = require('./middleware/parseUrl')
