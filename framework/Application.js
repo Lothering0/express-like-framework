@@ -5,6 +5,11 @@ module.exports = class Application {
   constructor() {
     this.emitter = new EventEmitter()
     this.server = this._createServer()
+    this.middleware = []
+  }
+
+  use(middleware) {
+    this.middleware.push(middleware)
   }
 
   listen(port, callback) {
@@ -16,9 +21,11 @@ module.exports = class Application {
       const endpoint = router.endpoints[path]
 
       Object.keys(endpoint).forEach((method) => {
-        const handler = endpoint[method]
-
         this.emitter.on(this._getRouteMask(path, method), (req, res) => {
+          const handler = endpoint[method]
+
+          this.middleware.forEach(mw => mw(req, res))
+
           handler(req, res)
         })
       })
