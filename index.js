@@ -1,5 +1,3 @@
-const http = require('http')
-const EventEmitter = require('events')
 const Router = require('./framework/Router')
 const Application = require('./framework/Application')
 const PORT = process.env.PORT || 5000
