@@ -5,7 +5,7 @@ module.exports = (baseUrl) => (req, res) => {
   parsedUrl.searchParams.forEach((value, key) => {
     return params[key] = value
   })
-  
+
   req.pathname = parsedUrl.pathname
   req.params = params
 }
